@@ -31,18 +31,12 @@ function initMikePall() {
                 if (Math.random()<set.ChanceToBorn) {
                     var clr = set.Tint
                     if (set.RandomTint==true) {
-                        clr = randomHEXI()
+                        clr = randomHexi()
                     }
                     new Atom(app,atomtexture,i+tx,j+ty,clr);
                 }
             }
         }
-    }
-}
-
-function applyImpulse() {
-    for (var i in atoms) {
-        atoms[i].randomAccel()
     }
 }
 
@@ -106,15 +100,6 @@ function MikePall (app) {
     }
 
     initMikePall()
-
-    function onMouseClick(){
-        set.MouseRadius++
-    }
-
-    function onMouseMove(event) {
-        mouse.x = event.clientX;
-        mouse.y = event.clientY;
-    }
 
     window.addEventListener("resize", initMikePall);
     window.addEventListener("click", onMouseClick);

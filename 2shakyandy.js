@@ -23,19 +23,13 @@ function initShakyAndy() {
                     if (Math.random()<set.ChanceToBorn) {
                         var clr = set.Tint
                         if (set.RandomTint==true) {
-                            clr = randomHEXI()
+                            clr = randomHexi()
                         }
                         new Atom(app,atomtexture,i+tx,j+ty,clr);
                     }
                 }
             }
         }
-    }
-}
-
-function applyImpulse() {
-    for (var i in atoms) {
-        atoms[i].randomAccel()
     }
 }
 
@@ -49,6 +43,7 @@ function ShakyAndy (app) {
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: true,
         AnimateImpulse: true, Step: 0.01,
         Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF, RandomTint: false,
+        AnimateTint: false,
         Disappear: false,
         ChanceToBorn: 0.5,
         Make: function() {initShakyAndy()},
@@ -76,7 +71,9 @@ function ShakyAndy (app) {
 
     folder.add(set, 'Alpha', 0, 1)
     folder.add(set, 'RandomAlpha')
-    folder.addColor(set, 'Tint')
+    folder.addColor(set, 'Tint').listen()
+    folder.add(set, 'AnimateTint')
+
     folder.add(set, 'RandomTint')
     folder.add(set, 'Disappear')
     folder.add(set, 'ChanceToBorn', 0, 1)
@@ -101,7 +98,9 @@ function ShakyAndy (app) {
                 set.Acceleration = 1
                 set.Step = -set.Step
             }
-
+        }
+        if (set.AnimateTint==true) {
+            set.Tint = addHexi(set.Tint,0x000111)
         }
     }
     initShakyAndy()

@@ -3,9 +3,14 @@ function randomInt (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-function randomHEXI() {
+function randomHexi() {
     var hex = parseInt(Math.random()*0xffffff,16)
     return hex
+}
+
+function addHexi(hexi,add) {
+    hexi += add
+    return hexi
 }
 
 function makeCircle(renderer, wid, hei,filters){
