@@ -6,9 +6,7 @@ function initShakyAndy() {
     set.ImageY = wh/2
 
     if (!resources[AW]) {
-        loader.add(AW).load(setup)
-    } else if (!resources[MY]) {
-        loader.add(MY).load(setup)
+        loader.add(AW).add(MY).add(KC).add(JH).add(DV).load(setup)
     } else {
         setup()
     }
@@ -20,7 +18,6 @@ function initShakyAndy() {
         let atomtexture = makeCircle(app.renderer,set.Width,set.Height,[])
         for(var i=0; i<ww; i++){
             for(var j=0;j<wh; j++){
-
                 if (dataImage.data[((i + j*ww)*4)]){
                     if (Math.random()<set.ChanceToBorn) {
                         var clr = set.Tint
@@ -38,23 +35,31 @@ function initShakyAndy() {
 var AW = 'https://bloximages.newyork1.vip.townnews.com/wisconsingazette.com/content/tncms/assets/v3/editorial/8/08/80862b88-9b47-11e8-868c-97ebae208fbd/5b6b4f931a453.image.jpg'
 var MY = 'https://lh5.googleusercontent.com/proxy/vMZSKcv9Nn1rOflLPfkzSWQbE1NdQVYIM3fbim2lWScpDYCaw6oK8yzj33FkA70uUl5tECTQc492JFMnGMtyEtEmIv1Tv5GZq3zyewmMa-sH8U42yPhF9Zg89fyW6gAU0XXd39qEV2Uv2g=s0'
 
+var KC = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnwEZ4D9ar8IQKMYXrGfFYJ9mO8qCskgnoovyRmI_lfZLLQIq0'
+
+var JH = 'https://i.pinimg.com/originals/e2/6b/bb/e26bbb18503340beaa026f4ef753a00f.png'
+
+var DV = 'https://i.pinimg.com/originals/a5/85/80/a58580a691acb1bc7b6d441d6eb41a1c.jpg'
+
 function ShakyAndy (app) {
     set = {URL: AW, ImageX: app.screen.width/2, ImageY: app.screen.height/2,
         RandomOrigin: false, Resize: 1.4,
         Atoms: 50000, Width: 2, Height: 2, ScaleX: 0.7, ScaleY: 0.7,Timer: 0,
-        Gravity: 0,Acceleration: 0.1,
+        Gravity: 0,Acceleration: 0.05,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: true,
         AnimateImpulse: true, Step: 0.001,
         Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF, RandomTint: false,
+        TripleTint: false,
         Disappear: false,
-        ChanceToBorn: 0.5,
+        ChanceToBorn: 0.3,
         Make: function() {initShakyAndy()},
         Clear: function() {clearAtoms()}
     }
 
     let folder = ui.addFolder('ShakyAndy')
-    folder.add(set,'URL',{AndyWarhol:AW,MasterYoda:MY}).onChange(
-                                                function() {initShakyAndy()})
+    folder.add(set,'URL',{AndyWarhol:AW,MasterYoda:MY,
+        KurtCobain:KC,JimiHendrix: JH, DarthVader: DV}).onChange(
+                                        function() {initShakyAndy()})
     folder.add(set, 'RandomOrigin')
     folder.add(set, 'Resize',0.5, 2)
     folder.add(set, 'ImageX',0, app.screen.width)

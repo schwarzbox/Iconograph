@@ -81,8 +81,8 @@ Atom.prototype.update = function(dt) {
 
     var distance = Math.sqrt(a*a + b*b);
     if(distance<(set.MouseRadius)){
-        this.sprite.acx += (this.sprite.x - mouse.x)/100;
-        this.sprite.acy += (this.sprite.y - mouse.y)/100;
+        this.sprite.acx += (this.sprite.x - mouse.x)*dt*10;
+        this.sprite.acy += (this.sprite.y - mouse.y)*dt*10;
         this.sprite.vx += this.sprite.acx;
         this.sprite.vy += this.sprite.acy;
     }

@@ -2,7 +2,8 @@
 
 WIP
 
-Pixi.js
+Visual generators Pixi.js
 
 MikePall
+
 ShakyAndy

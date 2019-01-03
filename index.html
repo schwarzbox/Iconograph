@@ -1,8 +1,8 @@
 <!-- add emiters atomX atomY rain drops destroyed inage-->
 
 <!-- dynamic text -->
-<!-- particle traces destroy images-->
-<!-- jo division waves -->
+<!-- particle traces destroy images rain drops-->
+<!-- random gen web -->
 
 <!-- pendulums -->
 <!-- Iconograph -->
@@ -82,7 +82,10 @@ DEALINGS IN THE SOFTWARE.
                 ShakyAndy(app)
                 NowImp = 'ShakyAndy'
             }
-            this.SelfDestructor = function() {}
+            this.SelfDestructor = function() {
+                reset()
+                NowImp = 'SelfDestructor'
+            }
             this.RainMan = function() {}
         }
 
@@ -139,7 +142,12 @@ DEALINGS IN THE SOFTWARE.
             ui.removeFolder(NowImp)
             // remove event listener
             window.removeEventListener("click", onMouseClick)
+            window.removeEventListener("dblclick", onMouseDoubleClick)
             window.removeEventListener("mousemove", onMouseMove)
+            window.removeEventListener("mousedown", onMouseDown)
+            window.removeEventListener("mouseover", onMouseOver)
+            window.removeEventListener("keydown", onKeyDown)
+
             clearAtoms()
         }
 
@@ -167,13 +175,40 @@ DEALINGS IN THE SOFTWARE.
             }
         }
 
+        function onKeyDown(event) {
+            console.log(event.key)
+            if (event.key==' ') {
+                applyImpulse()
+            }
+        }
+
         function onMouseClick(){
             set.MouseRadius++
+        }
+
+        function onMouseDoubleClick(){
+
+        }
+
+        function onMouseDown(event){
+            if (event.button == 0) {
+                set.isDown = true
+            }
+        }
+
+        function onMouseUp(event){
+            if (event.button == 0) {
+                set.isDown = false
+            }
         }
 
         function onMouseMove(event) {
             mouse.x = event.clientX;
             mouse.y = event.clientY;
+        }
+
+        function onMouseOver(event) {
+
         }
 
         function update(dt) {console.log("upd")}
@@ -182,6 +217,7 @@ DEALINGS IN THE SOFTWARE.
         DefaultImp(app)
 
         function mainLoop(dt){
+            // console.log(set.isDown)
             dt = 1/60
             // console.log('dt',dt)
             app.renderer.resize(window.innerWidth, window.innerHeight)

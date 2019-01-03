@@ -18,8 +18,8 @@ function initMikePall() {
     // }
     for(var i=0; i<ww; i++){
         for(var j=0;j<wh; j++){
-            if(dataImage.data[((i + j*ww)*4) + 3] > set.Density){
-
+            // get alpha
+            if(dataImage.data[((i + j*ww)*4)+3]){
                 if (Math.random()<set.ChanceToBorn) {
                     var clr = set.Tint
                     if (set.RandomTint==true) {
@@ -42,12 +42,13 @@ function MikePall (app) {
         Text: "Mike Pall \nis a \nRobot \nfrom the Future",
         TextX: app.screen.width/2, TextY: app.screen.height/2,FontSize: 96,
         RandomOrigin: true,
-        Atoms: 50000, Width: 8, Height: 8, ScaleX: 1, ScaleY: 1,
-        Timer: 200, Gravity: 0,  MouseRadius: 32, Acceleration: 256,
+        Atoms: 50000, Width: 4, Height: 4, ScaleX: 1, ScaleY: 1,
+        Timer: 200, Gravity: 0,  MouseRadius: 32, isDown: false,
+        Acceleration: 256,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: false,
-        Blur: 0, Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF,RandomTint: true,
-        Color1: 0xFF0000,Color2: 0x00FF00, Color3: 0x0000FF, TripleTint: false,
-        Density: 0, ChanceToBorn: 0.5, Disappear: false,
+        Blur: 0, Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF,RandomTint:false,
+        Color1: 0xff8f41,Color2: 0x78aff, Color3: 0xe000ff, TripleTint: true,
+        Density: 0, ChanceToBorn: 0.3, Disappear: false,
         Make: function() {initMikePall()},
         Clear: function() {clearAtoms()}
     }
@@ -71,7 +72,7 @@ function MikePall (app) {
 
     folder.add(set, 'Timer', 0, 1000).listen()
     folder.add(set, 'Gravity', 0, 10)
-    folder.add(set, 'MouseRadius',1,128)
+    folder.add(set, 'MouseRadius',1,128).listen()
     folder.add(set, 'Acceleration',0,128)
     folder.add(set, 'ApplyImpulse')
     folder.add(set, 'AutoImpulse')
@@ -105,12 +106,28 @@ function MikePall (app) {
         if (set.Timer>0) {
             set.Timer--
         }
+        if (set.isDown==true) {
+            set.MouseRadius-=1
+        }
+        if (set.MouseRadius<0) {
+            set.MouseRadius+=128
+        }
+    }
+
+    function onMouseOver(event) {
+
     }
 
     initMikePall()
+    window.addEventListener("resize", initMikePall)
+    window.addEventListener("click", onMouseClick)
+    window.addEventListener("dblclick", onMouseDoubleClick)
 
-    window.addEventListener("resize", initMikePall);
-    window.addEventListener("click", onMouseClick);
-    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousedown",onMouseDown)
+    window.addEventListener("mouseup",onMouseUp)
+
+    window.addEventListener("mousemove", onMouseMove)
+    window.addEventListener("mouseover", onMouseOver)
+    window.addEventListener("keydown", onKeyDown)
 }
 
