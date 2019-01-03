@@ -176,7 +176,6 @@ DEALINGS IN THE SOFTWARE.
         }
 
         function onKeyDown(event) {
-            console.log(event.key)
             if (event.key==' ') {
                 applyImpulse()
             }
@@ -217,7 +216,6 @@ DEALINGS IN THE SOFTWARE.
         DefaultImp(app)
 
         function mainLoop(dt){
-            // console.log(set.isDown)
             dt = 1/60
             // console.log('dt',dt)
             app.renderer.resize(window.innerWidth, window.innerHeight)
