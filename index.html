@@ -1,7 +1,10 @@
-<!-- upd text -->
-<!-- RGB Mike Pall -->
-<!-- add emiters atomX atomY -->
+<!-- add emiters atomX atomY rain drops destroyed inage-->
 
+<!-- dynamic text -->
+<!-- particle traces destroy images-->
+<!-- jo division waves -->
+
+<!-- pendulums -->
 <!-- Iconograph -->
 <!-- index.html -->
 
@@ -48,6 +51,8 @@ DEALINGS IN THE SOFTWARE.
 <body>
     <div id='gui'> </div>
     <script type="text/javascript">
+
+        addHexi(0x000000,1)
         let Application = PIXI.Application,
             loader = PIXI.loader,
             resources = PIXI.loader.resources,
@@ -63,15 +68,19 @@ DEALINGS IN THE SOFTWARE.
           type = "canvas"
         }
 
+        var DefaultImp = ShakyAndy
+        var NowImp = 'ShakyAndy'
         // ImageProcessors
         var IMPS = function() {
             this.MikePall = function() {
                 reset()
                 MikePall(app)
+                NowImp = 'MikePall'
             }
             this.ShakyAndy = function() {
                 reset()
                 ShakyAndy(app)
+                NowImp = 'ShakyAndy'
             }
             this.SelfDestructor = function() {}
             this.RainMan = function() {}
@@ -93,7 +102,6 @@ DEALINGS IN THE SOFTWARE.
             let set = gui.addFolder('Setup')
             set.addColor(Setup, "Background")
         }
-        var DefaultImp = ShakyAndy
 
         //Create a Pixi Application
         let app = new Application({
@@ -111,7 +119,6 @@ DEALINGS IN THE SOFTWARE.
         // globals
         let ui = new dat.GUI()
         var folder
-
         var atoms = {}; ID = 0;
         var mouse = {x:0,y:0}
         let blurFilter = new filters.BlurFilter()
@@ -129,11 +136,22 @@ DEALINGS IN THE SOFTWARE.
         let dt = 1/60
 
         function reset() {
+            ui.removeFolder(NowImp)
             // remove event listener
-
             window.removeEventListener("click", onMouseClick)
             window.removeEventListener("mousemove", onMouseMove)
             clearAtoms()
+        }
+
+        dat.GUI.prototype.removeFolder = function(name) {
+            var folder = this.__folders[name];
+            if (!folder) {
+                return;
+            }
+            folder.close();
+            this.__ul.removeChild(folder.domElement.parentNode);
+            delete this.__folders[name];
+            this.onResize();
         }
 
         function clearAtoms() {

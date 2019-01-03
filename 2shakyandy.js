@@ -5,8 +5,10 @@ function initShakyAndy() {
     set.ImageX = ww/2
     set.ImageY = wh/2
 
-    if (!resources[set.URL]) {
-        loader.add(set.URL).load(setup)
+    if (!resources[AW]) {
+        loader.add(AW).load(setup)
+    } else if (!resources[MY]) {
+        loader.add(MY).load(setup)
     } else {
         setup()
     }
@@ -33,26 +35,28 @@ function initShakyAndy() {
     }
 }
 
+var AW = 'https://bloximages.newyork1.vip.townnews.com/wisconsingazette.com/content/tncms/assets/v3/editorial/8/08/80862b88-9b47-11e8-868c-97ebae208fbd/5b6b4f931a453.image.jpg'
+var MY = 'https://lh5.googleusercontent.com/proxy/vMZSKcv9Nn1rOflLPfkzSWQbE1NdQVYIM3fbim2lWScpDYCaw6oK8yzj33FkA70uUl5tECTQc492JFMnGMtyEtEmIv1Tv5GZq3zyewmMa-sH8U42yPhF9Zg89fyW6gAU0XXd39qEV2Uv2g=s0'
+
 function ShakyAndy (app) {
-    set = {
-        URL: 'https://bloximages.newyork1.vip.townnews.com/wisconsingazette.com/content/tncms/assets/v3/editorial/8/08/80862b88-9b47-11e8-868c-97ebae208fbd/5b6b4f931a453.image.jpg',
-        ImageX: app.screen.width/2, ImageY: app.screen.height/2,
+    set = {URL: AW, ImageX: app.screen.width/2, ImageY: app.screen.height/2,
         RandomOrigin: false, Resize: 1.4,
         Atoms: 50000, Width: 2, Height: 2, ScaleX: 0.7, ScaleY: 0.7,Timer: 0,
-        MouseRadius: 32, Acceleration: 0.5,
+        Gravity: 0,Acceleration: 0.1,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: true,
-        AnimateImpulse: true, Step: 0.01,
+        AnimateImpulse: true, Step: 0.001,
         Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF, RandomTint: false,
-        AnimateTint: false,
         Disappear: false,
         ChanceToBorn: 0.5,
         Make: function() {initShakyAndy()},
         Clear: function() {clearAtoms()}
     }
 
-    folder = ui.addFolder('ShakyAndy')
+    let folder = ui.addFolder('ShakyAndy')
+    folder.add(set,'URL',{AndyWarhol:AW,MasterYoda:MY}).onChange(
+                                                function() {initShakyAndy()})
     folder.add(set, 'RandomOrigin')
-    folder.add(set, 'Resize',0, 2)
+    folder.add(set, 'Resize',0.5, 2)
     folder.add(set, 'ImageX',0, app.screen.width)
     folder.add(set, 'ImageY',0, app.screen.height)
 
@@ -62,8 +66,7 @@ function ShakyAndy (app) {
     folder.add(set, 'ScaleX',0,4)
     folder.add(set, 'ScaleY',0,4)
 
-
-    folder.add(set, 'MouseRadius',1,128)
+    folder.add(set, 'Gravity', 0, 10)
     folder.add(set, 'Acceleration',0,128).listen()
     folder.add(set, 'ApplyImpulse')
     folder.add(set, 'AutoImpulse')
@@ -72,7 +75,6 @@ function ShakyAndy (app) {
     folder.add(set, 'Alpha', 0, 1)
     folder.add(set, 'RandomAlpha')
     folder.addColor(set, 'Tint').listen()
-    folder.add(set, 'AnimateTint')
 
     folder.add(set, 'RandomTint')
     folder.add(set, 'Disappear')
@@ -99,12 +101,8 @@ function ShakyAndy (app) {
                 set.Step = -set.Step
             }
         }
-        if (set.AnimateTint==true) {
-            set.Tint = addHexi(set.Tint,0x000111)
-        }
     }
     initShakyAndy()
-
     window.addEventListener("resize", initShakyAndy);
 }
 

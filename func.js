@@ -8,8 +8,15 @@ function randomHexi() {
     return hex
 }
 
-function addHexi(hexi,add) {
-    hexi += add
+function addHexi(hexi,rdt,gdt,bdt) {
+    // var hexs = hexi.toString(16)
+    hexi = parseInt(hexi)
+    let b = hexi & 255
+    let g = (hexi >> 8) & 255
+    let r = (hexi >> 16) & 255
+
+    hexi=((r+rdt) * 65536) + ((g+gdt)*256) + (b+bdt)
+
     return hexi
 }
 

@@ -46,7 +46,7 @@ Atom.prototype.randomAccel = function() {
 }
 
 Atom.prototype.update = function(dt) {
-    if (set.RandomTint==false) {
+    if (set.RandomTint==false && set.TripleTint==false) {
         this.sprite.tint = set.Tint
     }
     if (set.RandomAlpha==false) {
