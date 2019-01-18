@@ -3,6 +3,12 @@ function randomInt (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+function magnitude(x,y,x1,y1) {
+    return ((x1-x) ** 2 + (y1-y) ** 2)**0.5
+}
+
+
+
 function randomHexi() {
     var hex = parseInt(Math.random()*0xffffff,16)
     return hex
@@ -19,6 +25,10 @@ function addHexi(hexi,rdt,gdt,bdt) {
 
     return hexi
 }
+
+// function makeLine(renderer) {
+
+// }
 
 function makeCircle(renderer, wid, hei,filters){
     let gfx = new PIXI.Graphics();

@@ -1,8 +1,10 @@
-# Iconograph
+# Iconograph-Pixi.js
 
 WIP
 
-Visual generators Pixi.js
+Pixi.js
+
+Visual Generators
 
 MikePall
 

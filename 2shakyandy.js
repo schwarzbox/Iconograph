@@ -44,13 +44,15 @@ var DV = 'https://i.pinimg.com/originals/a5/85/80/a58580a691acb1bc7b6d441d6eb41a
 function ShakyAndy (app) {
     set = {URL: AW, ImageX: app.screen.width/2, ImageY: app.screen.height/2,
         RandomOrigin: false, Resize: 1.4,
-        Atoms: 50000, Width: 2, Height: 2, ScaleX: 0.7, ScaleY: 0.7,Timer: 0,
-        Gravity: 0,Acceleration: 0.05,
+        Atoms: 50000,Width: 2,Height: 2,ScaleX: 0.7,ScaleY: 0.7,
+        RandomScale:true,
+        Timer: 0,Gravity: 0, Acceleration: 0.05, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: true,
         AnimateImpulse: true, Step: 0.001,
         Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF, RandomTint: false,
         TripleTint: false,
         Disappear: false,
+
         ChanceToBorn: 0.3,
         Make: function() {initShakyAndy()},
         Clear: function() {clearAtoms()}
@@ -89,9 +91,9 @@ function ShakyAndy (app) {
 
     update = function(dt) {
         c = 0
-        for (var i in atoms) {
+        for (var id in atoms) {
             c++
-            atoms[i].update(dt)
+            atoms[id].update(dt)
         }
         set.Atoms = c
 
@@ -107,7 +109,20 @@ function ShakyAndy (app) {
             }
         }
     }
+
+    function onKeyDown(event) {
+        if (event.key==' ') {
+            set.ApplyImpulse()
+        }
+    }
+
+    function onResize(){
+        initShakyAndy()
+    }
+
+    window.addEventListener("resize", onResize)
+    window.addEventListener("keydown", onKeyDown)
+
     initShakyAndy()
-    window.addEventListener("resize", initShakyAndy);
 }
 

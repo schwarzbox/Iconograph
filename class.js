@@ -15,8 +15,14 @@ function Atom(app,texture,x,y,clr) {
     this.sprite.vy = 0
     this.randomAccel()
     this.sprite.pivot.set(this.sprite.width/2, this.sprite.height/2)
-    let scale = Math.random() * set.ScaleX
-    this.sprite.scale.set(scale,scale)
+
+    let scalex = set.ScaleX
+    let scaley = set.SceleY
+    if (set.RandomScale) {
+        let scalex = Math.random() * set.ScaleX
+        let scaley = Math.random() * set.ScaleX
+    }
+    this.sprite.scale.set(scalex,scaley)
 
     this.sprite.tint = clr
     if (set.RandomAlpha==true) {
@@ -24,12 +30,19 @@ function Atom(app,texture,x,y,clr) {
     }
     app.stage.addChild(this.sprite)
 
-    ID++
+    this.nodes = []
+    this.nodeID = 0
+    this.nodesEmpty = true
+
     this.ID = ID
+    ID++
     atoms[this.ID] = this
 }
 
 Atom.prototype.removeAtom = function() {
+    for (var i in this.nodes) {
+        this.nodes[i].removeNode()
+    }
     app.stage.removeChild(this.sprite);
     this.sprite.destroy()
     delete atoms[this.ID]
@@ -80,13 +93,80 @@ Atom.prototype.update = function(dt) {
     var b = this.sprite.y - mouse.y;
 
     var distance = Math.sqrt(a*a + b*b);
-    if(distance<(set.MouseRadius)){
-        this.sprite.acx += (this.sprite.x - mouse.x)*dt*10;
-        this.sprite.acy += (this.sprite.y - mouse.y)*dt*10;
+    if(distance<set.MouseRadius){
+        this.sprite.acx = (this.sprite.x - mouse.x)*dt*set.MousePower;
+        this.sprite.acy = (this.sprite.y - mouse.y)*dt*set.MousePower;
         this.sprite.vx += this.sprite.acx;
         this.sprite.vy += this.sprite.acy;
     }
     this.sprite.acx = 0
     this.sprite.acy = 0
-    this.linearDamp(dt)
+
+    if (set.LinearDamp) {
+        this.linearDamp(dt)
+    }
+    this.nodesEmpty = true
+    let count = 0
+    for (var nodeid in this.nodes) {
+        count++
+        if (count > 8) {
+            this.nodesEmpty = false
+        }
+        dist = this.nodes[nodeid].update(dt)
+        if (set.SwitchSource && (this.nodes[nodeid].alpha < 0.05)) {
+            this.nodes[nodeid].removeNode()
+        }
+    }
+}
+
+function Node(source,dest,wid) {
+    this.node = new PIXI.Graphics()
+    this.source = source
+    this.dest = dest
+    this.x = this.source.sprite.x
+    this.y = this.source.sprite.y
+    this.destx = this.dest.sprite.x
+    this.desty = this.dest.sprite.y
+    this.tint = this.source.sprite.tint
+    this.alpha = this.source.sprite.alpha
+
+
+    this.node.lineStyle(wid, this.tint, this.alpha)
+    this.node.position.set(0,0)
+    this.node.moveTo(this.x,this.y)
+    this.node.lineTo(this.destx,this.desty)
+
+    this.ID = this.source.nodeID
+    this.source.nodeID++
+    this.source.nodes[this.ID] = this
+    app.stage.addChild(this.node)
+}
+
+Node.prototype.update = function(dt) {
+    this.x = this.source.sprite.x
+    this.y = this.source.sprite.y
+    this.destx = this.dest.sprite.x
+    this.desty = this.dest.sprite.y
+    let dist = magnitude(this.x,this.y,this.destx,this.desty)
+    this.node.clear()
+    // this.beginFill()
+    let overone = dist*2/set.NodeLength
+    this.alpha = this.source.alpha
+    if (overone>1) {
+        this.alpha = 1 / overone
+    }
+    this.node.lineStyle(1, this.tint, this.alpha)
+
+    this.node.moveTo(this.x,this.y)
+    this.node.lineTo(this.destx,this.desty)
+
+    // this.endFill()
+    return dist
+}
+
+Node.prototype.removeNode = function() {
+    delete this.source.nodes[this.ID]
+    // console.log(this.source.nodes)
+    app.stage.removeChild(this.node)
+    this.node.destroy()
 }

@@ -3,10 +3,10 @@ function initMikePall() {
 
     let ww = app.screen.width
     let wh = app.screen.height
-    set.TextX = ww/2
-    set.TextY = wh/2
+    set.ImageX = ww/2
+    set.ImageY = wh/2
 
-    let data = makeText(app,set.Text,set.TextX,set.TextY,ww,wh,set.FontSize)
+    let data = makeText(app,set.Text,set.ImageX,set.ImageY,ww,wh,set.FontSize)
     let dataImage=data[0],tx=data[1],ty=data[2]
 
     var blur = Math.cos(Math.random())
@@ -40,11 +40,12 @@ function initMikePall() {
 function MikePall (app) {
     set = {
         Text: "Mike Pall \nis a \nRobot \nfrom the Future",
-        TextX: app.screen.width/2, TextY: app.screen.height/2,FontSize: 96,
+        ImageX: app.screen.width/2, ImageY: app.screen.height/2,FontSize: 96,
+        AtomX: app.screen.width/2, AtomY: app.screen.height/2,
         RandomOrigin: true,
-        Atoms: 50000, Width: 4, Height: 4, ScaleX: 1, ScaleY: 1,
-        Timer: 200, Gravity: 0,  MouseRadius: 32, isDown: false,
-        Acceleration: 256,
+        Atoms: 50000,Width: 4, Height: 4,ScaleX: 1,ScaleY: 1,RandomScale:true,
+        Timer: 200, Gravity: 0,  MouseRadius: 32,MousePower: 10, isDown: false,
+        Acceleration: 256, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: false,
         Blur: 0, Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF,RandomTint:false,
         Color1: 0xff8f41,Color2: 0x78aff, Color3: 0xe000ff, TripleTint: true,
@@ -59,8 +60,8 @@ function MikePall (app) {
                "Small is beautiful",
                "Ground Control\nto \nMajor Tom"
             ]).onChange(function() {initMikePall()})
-    folder.add(set, 'TextX',0, app.screen.width)
-    folder.add(set, 'TextY',0, app.screen.height)
+    folder.add(set, 'ImageX',0, app.screen.width)
+    folder.add(set, 'ImageY',0, app.screen.height)
     folder.add(set, 'FontSize',64,128)
     folder.add(set, 'RandomOrigin')
     folder.add(set, 'Atoms', 0, 50000).listen()
@@ -98,9 +99,9 @@ function MikePall (app) {
 
     update = function(dt) {
         c = 0
-        for (var i in atoms) {
+        for (var id in atoms) {
             c++
-            atoms[i].update(dt)
+            atoms[id].update(dt)
         }
         set.Atoms = c
         if (set.Timer>0) {
@@ -114,12 +115,40 @@ function MikePall (app) {
         }
     }
 
-    function onMouseOver(event) {
-
+    function onResize(){
+        initMikePall()
     }
 
-    initMikePall()
-    window.addEventListener("resize", initMikePall)
+    function onKeyDown(event) {
+        if (event.key==' ') {
+            set.ApplyImpulse()
+        }
+    }
+
+    function onMouseClick(event){
+        set.MouseRadius++
+    }
+
+    function onMouseDown(event){
+        if (event.button == 0) {
+            set.isDown = true
+        }
+    }
+
+    function onMouseUp(event){
+        if (event.button == 0) {
+            set.isDown = false
+        }
+    }
+
+    function onMouseMove(event) {
+        mouse.x = event.clientX;
+        mouse.y = event.clientY;
+    }
+
+    window.addEventListener("resize", onResize)
+    // window.addEventListener("keydown", onKeyDown)
+
     window.addEventListener("click", onMouseClick)
     window.addEventListener("dblclick", onMouseDoubleClick)
 
@@ -128,6 +157,6 @@ function MikePall (app) {
 
     window.addEventListener("mousemove", onMouseMove)
     window.addEventListener("mouseover", onMouseOver)
-    window.addEventListener("keydown", onKeyDown)
+    initMikePall()
 }
 
