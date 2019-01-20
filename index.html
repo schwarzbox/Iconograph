@@ -1,4 +1,5 @@
 <!-- Iconograph -->
+<!-- v0.1 -->
 <!-- index.html -->
 
 <!-- MIT License
@@ -22,15 +23,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
  -->
-<!-- apply impulse space -->
-<!-- // lines func? -->
-<!-- - Sera 800/128-->
-<!-- - Perlin -->
+
+<!-- lines func -->
+<!-- proto set -->
+<!-- sera 800/128-->
 <!-- particle traces-->
 
+<!-- perlin -->
 <!-- dynamic text -->
-
-
 <!-- pendulums -->
 
 <!doctype html>
@@ -134,9 +134,22 @@ DEALINGS IN THE SOFTWARE.
         // globals
         let ui = new dat.GUI()
         var folder
+        var events = {"resize": {"name":null, "func":null},
+                        "keydown": {"name":null, "func":null},
+                        "click": {"name":null, "func":null},
+                        "dblclick": {"name":null, "func":null},
+                        "mousedown": {"name":null, "func":null},
+                        "mouseup": {"name":null, "func":null},
+                        "mouseover": {"name":null, "func":null},
+                        "mousemove": {"name":null, "func":null},
+                    }
+
+        var set = {}
         // atoms numbers
         var atoms = {}; ID = 0;
         var mouse = {x:0,y:0}
+        let dt = 1/60
+
         let blurFilter = new filters.BlurFilter()
         let colorMatrix = [
         //R  G  B  A
@@ -148,32 +161,32 @@ DEALINGS IN THE SOFTWARE.
         let colorFilter = new filters.ColorMatrixFilter()
         colorFilter.matrix = colorMatrix
 
-        var set = {}
-        let dt = 1/60
 
         function reset() {
             ui.removeFolder(NowImp)
-            // remove event listener
-            window.addEventListener("resize", onResize)
-            // window.removeEventListener("keydown", onKeyDown)
-            window.removeEventListener("click", onMouseClick)
-            window.removeEventListener("dblclick", onMouseDoubleClick)
-            window.removeEventListener("mousedown", onMouseDown)
-            window.removeEventListener("mouseup", onMouseUp)
-            window.removeEventListener("mouseover", onMouseOver)
-            window.removeEventListener("mousemove", onMouseMove)
+            // remove all event listener
+            for (ev in events) {
+                if (events[ev]["name"]) {
+                    window.removeEventListener(events[ev]["name"],events[ev]["func"])
+                }
+            }
             clearAtoms()
         }
 
         dat.GUI.prototype.removeFolder = function(name) {
-            var folder = this.__folders[name];
+            var folder = this.__folders[name]
             if (!folder) {
-                return;
+                return
             }
-            folder.close();
-            this.__ul.removeChild(folder.domElement.parentNode);
-            delete this.__folders[name];
-            this.onResize();
+            folder.close()
+            this.__ul.removeChild(folder.domElement.parentNode)
+            delete this.__folders[name]
+        }
+
+        function addEvent(ev, func) {
+            events[ev]["name"] = ev
+            events[ev]["func"] = func
+            window.addEventListener(ev, func)
         }
 
         function clearAtoms() {
@@ -190,40 +203,39 @@ DEALINGS IN THE SOFTWARE.
             }
         }
 
-        function onResize(){
+        function onresize(){
 
         }
 
-        function onKeyDown(event) {
+        function onkeydown(event) {
 
         }
 
-        function onMouseClick(event){
+        function onclick(event){
 
         }
 
-        function onMouseDoubleClick(event){
+        function ondblclick(event){
 
         }
 
-        function onMouseDown(event){
+        function onmousedown(event){
 
         }
 
-        function onMouseUp(event){
+        function onmouseup(event){
 
         }
 
-        function onMouseMove(event) {
+        function onmousemove(event) {
 
         }
 
-        function onMouseOver(event) {
+        function onmouseover(event) {
 
         }
 
         function update(dt) {console.log("empty update")}
-
         // run default app
         DefaultImp(app)
 

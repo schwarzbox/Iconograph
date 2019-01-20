@@ -33,6 +33,7 @@ function Atom(app,texture,x,y,clr) {
     this.nodes = []
     this.nodeID = 0
     this.nodesEmpty = true
+    this.nodesCount = 0
 
     this.ID = ID
     ID++
@@ -106,14 +107,14 @@ Atom.prototype.update = function(dt) {
         this.linearDamp(dt)
     }
     this.nodesEmpty = true
-    let count = 0
+    this.nodesCount = 0
     for (var nodeid in this.nodes) {
-        count++
-        if (count > 8) {
+        this.nodesCount++
+        if (this.nodesCount > set.Nodes) {
             this.nodesEmpty = false
         }
-        dist = this.nodes[nodeid].update(dt)
-        if (set.SwitchSource && (this.nodes[nodeid].alpha < 0.05)) {
+        this.nodes[nodeid].update(dt)
+        if (set.NodeSwitch && this.nodes[nodeid].alpha < 0.1) {
             this.nodes[nodeid].removeNode()
         }
     }
@@ -159,9 +160,7 @@ Node.prototype.update = function(dt) {
 
     this.node.moveTo(this.x,this.y)
     this.node.lineTo(this.destx,this.desty)
-
     // this.endFill()
-    return dist
 }
 
 Node.prototype.removeNode = function() {

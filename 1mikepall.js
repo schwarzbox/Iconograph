@@ -42,9 +42,10 @@ function MikePall (app) {
         Text: "Mike Pall \nis a \nRobot \nfrom the Future",
         ImageX: app.screen.width/2, ImageY: app.screen.height/2,FontSize: 96,
         AtomX: app.screen.width/2, AtomY: app.screen.height/2,
-        RandomOrigin: true,
+        RandomOrigin: true, NumberAtoms: 0,
         Atoms: 50000,Width: 4, Height: 4,ScaleX: 1,ScaleY: 1,RandomScale:true,
-        Timer: 200, Gravity: 0,  MouseRadius: 32,MousePower: 10, isDown: false,
+        Nodes: 9, NodeLength: app.screen.width/16, NodeSwitch: false,
+        Timer: 200, Gravity: 0,  MouseRadius: 32,MousePower: 0.5,isDown: false,
         Acceleration: 256, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: false,
         Blur: 0, Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF,RandomTint:false,
@@ -64,7 +65,8 @@ function MikePall (app) {
     folder.add(set, 'ImageY',0, app.screen.height)
     folder.add(set, 'FontSize',64,128)
     folder.add(set, 'RandomOrigin')
-    folder.add(set, 'Atoms', 0, 50000).listen()
+    folder.add(set, 'NumberAtoms').listen()
+    // folder.add(set, 'Atoms', 0, 50000)
 
     folder.add(set, 'Width', 2, 64)
     folder.add(set, 'Height', 2, 64)
@@ -74,6 +76,8 @@ function MikePall (app) {
     folder.add(set, 'Timer', 0, 1000).listen()
     folder.add(set, 'Gravity', 0, 10)
     folder.add(set, 'MouseRadius',1,128).listen()
+    folder.add(set, 'MousePower',0,16).listen()
+
     folder.add(set, 'Acceleration',0,128)
     folder.add(set, 'ApplyImpulse')
     folder.add(set, 'AutoImpulse')
@@ -103,7 +107,7 @@ function MikePall (app) {
             c++
             atoms[id].update(dt)
         }
-        set.Atoms = c
+        set.NumberAtoms = c
         if (set.Timer>0) {
             set.Timer--
         }
@@ -115,48 +119,47 @@ function MikePall (app) {
         }
     }
 
-    function onResize(){
+    function onresize(){
         initMikePall()
     }
 
-    function onKeyDown(event) {
+    function onkeydown(event) {
+        console.log(event)
         if (event.key==' ') {
             set.ApplyImpulse()
         }
     }
 
-    function onMouseClick(event){
+    function onclick(event){
         set.MouseRadius++
     }
 
-    function onMouseDown(event){
+    function onmousedown(event){
         if (event.button == 0) {
             set.isDown = true
         }
     }
 
-    function onMouseUp(event){
+    function onmouseup(event){
         if (event.button == 0) {
             set.isDown = false
         }
     }
 
-    function onMouseMove(event) {
+    function onmousemove(event) {
         mouse.x = event.clientX;
         mouse.y = event.clientY;
     }
 
-    window.addEventListener("resize", onResize)
-    // window.addEventListener("keydown", onKeyDown)
+    addEvent("resize",onresize)
+    addEvent("keydown",onkeydown)
+    addEvent("click", onclick)
+    addEvent("dblclick",ondblclick)
+    addEvent("mousedown",onmousedown)
+    addEvent("mouseup",onmouseup)
+    addEvent("mousemove", onmousemove)
+    addEvent("mouseover", onmouseover)
 
-    window.addEventListener("click", onMouseClick)
-    window.addEventListener("dblclick", onMouseDoubleClick)
-
-    window.addEventListener("mousedown",onMouseDown)
-    window.addEventListener("mouseup",onMouseUp)
-
-    window.addEventListener("mousemove", onMouseMove)
-    window.addEventListener("mouseover", onMouseOver)
     initMikePall()
 }
 

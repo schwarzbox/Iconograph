@@ -41,20 +41,32 @@ function addNewWeb(event) {
 
 function addNodes() {
     for (var id in atoms) {
-        if (atoms[id].nodesEmpty) {
-            for (var nd in atoms) {
-                if (id!=nd) {
-                    let x = atoms[id].sprite.position.x
-                    let y = atoms[id].sprite.position.y
-                    let destx = atoms[nd].sprite.position.x
-                    let desty = atoms[nd].sprite.position.y
-                    let dist = magnitude(x,y,destx,desty)
+        for (var nd in atoms) {
+            if (id!=nd) {
+                let x = atoms[id].sprite.position.x
+                let y = atoms[id].sprite.position.y
+                let destx = atoms[nd].sprite.position.x
+                let desty = atoms[nd].sprite.position.y
+                let dist = magnitude(x,y,destx,desty)
+                if (atoms[id].nodesEmpty) {
                     if (dist < set.NodeLength) {
+                        new Node(atoms[id],atoms[nd],1)
+                    }
+                }
+                let countid = atoms[id].nodesCount
+                let countnd = atoms[nd].nodesCount
+
+                if (countid < countnd) {
+                    if (dist < set.NodeLength) {
+                        for (var i in atoms[nd].nodes) {
+                            atoms[nd].nodes[i].removeNode()
+                        }
                         new Node(atoms[id],atoms[nd],1)
                     }
                 }
             }
         }
+
     }
 }
 
@@ -63,10 +75,10 @@ function WebWorld (app) {
         RandomOrigin: false,
         NumberAtoms: 0,
         Atoms: 32, Width: 2,Height: 2, ScaleX: 1, ScaleY: 1,
-        RandomScale: false, NodeLength: app.screen.width/32,
-        SwitchSource: false,
+        RandomScale: false, Nodes: 7, NodeLength: app.screen.width/16,
+        NodeSwitch: false,
         Timer: 200, Gravity: 0, MouseRadius: 64, MousePower: 0.5,isDown: false,
-        Acceleration: 8, LinearDamp: true,
+        Acceleration: 16, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: true,
         Blur: 0, Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF,RandomTint:true,
         Color1: 0xff8f41,Color2: 0x78aff, Color3: 0xe000ff, TripleTint: false,
@@ -80,17 +92,16 @@ function WebWorld (app) {
     folder.add(set, 'AtomY', 0, app.screen.height).listen()
     folder.add(set, 'RandomOrigin').listen()
     folder.add(set, 'NumberAtoms').listen()
-    folder.add(set, 'Atoms', 0, 64).listen()
+    folder.add(set, 'Atoms', 0, 64)
     folder.add(set, 'Width', 2, 8)
     folder.add(set, 'Height', 2, 8)
-
+    folder.add(set, 'Nodes', 0, 15)
     folder.add(set, 'NodeLength',1, app.screen.width).listen()
-    folder.add(set, 'SwitchSource')
+    folder.add(set, 'NodeSwitch')
     folder.add(set, 'Acceleration',0,128).listen()
     folder.add(set, 'AutoImpulse')
     folder.add(set, 'LinearDamp')
 
-    folder.add(set, 'Alpha', 0, 1)
     folder.addColor(set, 'Tint')
     folder.add(set,'RandomTint').listen().onChange(
                                         function() {set['TripleTint']=false})
@@ -114,30 +125,31 @@ function WebWorld (app) {
         set.NumberAtoms = c
     }
 
-    function onResize(){
+    function onresize(){
         set.AtomX=app.screen.width/2
         set.AtomY=app.screen.height/2
     }
 
-    function onMouseDoubleClick(event){
+    function ondblclick(event){
         addNewWeb(event)
     }
 
-    function onMouseMove(event) {
+    function onmousemove(event) {
         mouse.x = event.clientX;
         mouse.y = event.clientY;
     }
 
-    function onKeyDown(event) {
+    function onkeydown(event) {
         if (event.key==' ') {
             initWebWorld()
         }
     }
 
-    window.addEventListener("resize", onResize)
-    window.addEventListener("dblclick", onMouseDoubleClick)
-    window.addEventListener("mousemove", onMouseMove)
-    window.addEventListener("keydown", onKeyDown)
+    addEvent("resize",onresize)
+    addEvent("dblclick",ondblclick)
+    addEvent("mousemove",onmousemove)
+    addEvent("keydown",onkeydown)
+
 
     initWebWorld()
 }

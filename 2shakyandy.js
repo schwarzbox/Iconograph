@@ -43,9 +43,10 @@ var DV = 'https://i.pinimg.com/originals/a5/85/80/a58580a691acb1bc7b6d441d6eb41a
 
 function ShakyAndy (app) {
     set = {URL: AW, ImageX: app.screen.width/2, ImageY: app.screen.height/2,
-        RandomOrigin: false, Resize: 1.4,
+        RandomOrigin: false, Resize: 1.4, NumberAtoms: 0,
         Atoms: 50000,Width: 2,Height: 2,ScaleX: 0.7,ScaleY: 0.7,
         RandomScale:true,
+        Nodes: 9, NodeLength: app.screen.width/16, NodeSwitch: false,
         Timer: 0,Gravity: 0, Acceleration: 0.05, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: true,
         AnimateImpulse: true, Step: 0.001,
@@ -66,8 +67,8 @@ function ShakyAndy (app) {
     folder.add(set, 'Resize',0.5, 2)
     folder.add(set, 'ImageX',0, app.screen.width)
     folder.add(set, 'ImageY',0, app.screen.height)
-
-    folder.add(set, 'Atoms', 0, 50000).listen()
+    folder.add(set, 'NumberAtoms').listen()
+    // folder.add(set, 'Atoms', 0, 50000)
     folder.add(set, 'Width', 2, 64)
     folder.add(set, 'Height', 2, 64)
     folder.add(set, 'ScaleX',0,4)
@@ -95,7 +96,7 @@ function ShakyAndy (app) {
             c++
             atoms[id].update(dt)
         }
-        set.Atoms = c
+        set.NumberAtoms = c
 
         if (set.AnimateImpulse==true) {
             set.Acceleration += set.Step
@@ -110,18 +111,18 @@ function ShakyAndy (app) {
         }
     }
 
-    function onKeyDown(event) {
+    function onkeydown(event) {
         if (event.key==' ') {
             set.ApplyImpulse()
         }
     }
 
-    function onResize(){
+    function onresize(){
         initShakyAndy()
     }
 
-    window.addEventListener("resize", onResize)
-    window.addEventListener("keydown", onKeyDown)
+    addEvent("resize",onresize)
+    addEvent("keydown",onkeydown)
 
     initShakyAndy()
 }
