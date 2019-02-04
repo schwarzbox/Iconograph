@@ -19,7 +19,7 @@ function initShakyAndy() {
         let atomtexture = makeCircle(app.renderer,set.Width,set.Height,[])
         for(var i=0; i<ww; i++){
             for(var j=0;j<wh; j++){
-                if (dataImage.data[((i + j*ww)*4)]){
+                if (dataImage.data[((i + j*ww)*4)+3]){
                     if (Math.random()<set.ChanceToBorn) {
                         var clr = set.Tint
                         if (set.RandomTint==true) {
@@ -45,8 +45,9 @@ function ShakyAndy (app) {
         Timer: 0,Gravity: 0, Acceleration: 0.05, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: true,
         AnimateImpulse: true, Step: 0.001,
-        Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF, RandomTint: false,
-        TripleTint: false,
+        ImpulseRadius: 0, BulbImpulse: false,
+        AlphaRadius: 0, Alpha: 1, RandomAlpha: false,
+        Tint: 0xFFFFFF, RandomTint: false, TripleTint: false,
         Disappear: false,
         ChanceToBorn: 0.3,
         Make: function() {initShakyAndy()},

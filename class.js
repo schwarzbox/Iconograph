@@ -60,29 +60,41 @@ Atom.prototype.randomAccel = function() {
 }
 
 Atom.prototype.radiusAccel = function() {
-    var mag = magnitude(set.AtomX, set.AtomY,
-                        this.sprite.x,this.sprite.y)
+    // let dirx = (this.sprite.x-set.AtomX)/ this.mag
+    // let diry = (this.sprite.y-set.AtomY)/ this.mag
+    let dirx = 1
+    let diry = 1
+    this.sprite.acx += dirx * this.mag/set.ImpulseRadius
+    this.sprite.acy += diry * this.mag/set.ImpulseRadius
+}
 
-    if (set.InvertImpulse==true) {
-        this.sprite.acx = mag/(this.sprite.x-set.AtomX)*set.Acceleration
-        this.sprite.acy = mag/(this.sprite.y-set.AtomY)*set.Acceleration
-    } else {
-        this.sprite.acx = (this.sprite.x-set.AtomX)/mag*set.Acceleration
-        this.sprite.acy = (this.sprite.y-set.AtomY)/mag*set.Acceleration
-    }
+Atom.prototype.bulbAccel = function() {
+    this.sprite.acx = (this.sprite.x-set.AtomX)/this.mag*set.Acceleration
+    this.sprite.acy = (this.sprite.y-set.AtomY)/this.mag*set.Acceleration
 }
 
 Atom.prototype.update = function(dt) {
+    this.mag = magnitude(this.sprite.x,this.sprite.y,set.AtomX, set.AtomY)
+
     if (set.RandomTint==false && set.TripleTint==false) {
         this.sprite.tint = set.Tint
     }
     if (set.RandomAlpha==false) {
-        this.sprite.alpha = set.Alpha
+        if (set.AlphaRadius > 0) {
+            let mag = magnitude(this.sprite.x,this.sprite.y,
+                    this.sprite.origin.x,this.sprite.origin.y,)
+            this.sprite.alpha = set.Alpha - mag/set.AlphaRadius
+        }else{
+            this.sprite.alpha = set.Alpha
+        }
     }
     if (set.AutoImpulse==true) {
         this.randomAccel()
     }
-    if (set.RadiusImpulse==true) {
+    if (set.BulbImpulse==true) {
+        this.bulbAccel()
+    }
+    if (set.ImpulseRadius>0) {
         this.radiusAccel()
     }
     if (set.Disappear==true) {
@@ -137,7 +149,6 @@ Atom.prototype.update = function(dt) {
 }
 
 function Node(source,dest,wid) {
-    this.node = new PIXI.Graphics()
     this.source = source
     this.dest = dest
     this.x = this.source.sprite.x
@@ -147,11 +158,8 @@ function Node(source,dest,wid) {
     this.tint = this.source.sprite.tint
     this.alpha = this.source.sprite.alpha
 
-
-    this.node.lineStyle(wid, this.tint, this.alpha)
-    this.node.position.set(0,0)
-    this.node.moveTo(this.x,this.y)
-    this.node.lineTo(this.destx,this.desty)
+    this.node = makeLine(this.x,this.y,this.destx,this.desty,
+                            wid, this.tint, this.alpha)
 
     this.ID = this.source.nodeID
     this.source.nodeID++
@@ -166,22 +174,19 @@ Node.prototype.update = function(dt) {
     this.desty = this.dest.sprite.y
     let dist = magnitude(this.x,this.y,this.destx,this.desty)
     this.node.clear()
-    // this.beginFill()
+
     let overone = dist*2/set.NodeLength
     this.alpha = this.source.alpha
     if (overone>1) {
         this.alpha = 1 / overone
     }
     this.node.lineStyle(1, this.tint, this.alpha)
-
     this.node.moveTo(this.x,this.y)
     this.node.lineTo(this.destx,this.desty)
-    // this.endFill()
 }
 
 Node.prototype.removeNode = function() {
     delete this.source.nodes[this.ID]
-    // console.log(this.source.nodes)
     app.stage.removeChild(this.node)
     this.node.destroy()
 }

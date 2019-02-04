@@ -41,7 +41,7 @@ function MikePall (app) {
     set = {
         Text: "Mike Pall \nis a \nRobot \nfrom the Future",
         AtomX: app.screen.width/2, AtomY: app.screen.height/2,FontSize: 96,
-        AtomX: app.screen.width/2, AtomY: app.screen.height/2,
+        RandomAtomXY: false,
         RandomOrigin: true, Resize: 1.4, NumberAtoms: 0,
         Atoms: 50000,Width: 4, Height: 4,ScaleX: 1,ScaleY: 1,RandomScale:true,
         Nodes: 9, NodeLength: app.screen.width/16, NodeSwitch: false,
@@ -49,10 +49,11 @@ function MikePall (app) {
         Acceleration: 256, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: false,
         AnimateImpulse: true, Step: 0.001,
-        RadiusImpulse: false, MoveImpulse: false, InvertImpulse: false,
-        Blur: 0, Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF,RandomTint:false,
+        ImpulseRadius: 0, BulbImpulse: false,
+        Blur: 0, AlphaRadius: 0, Alpha: 1, RandomAlpha: false,
+        Tint: 0xFFFFFF,RandomTint:false,
         Color1: 0xff8f41,Color2: 0x78aff, Color3: 0xe000ff, TripleTint: true,
-        Density: 0, ChanceToBorn: 0.3, Disappear: false,
+        ChanceToBorn: 0.3, Disappear: false,
         Make: function() {initMikePall()},
         Clear: function() {clearAtoms()}
     }
@@ -98,7 +99,6 @@ function MikePall (app) {
                                     function() {set['RandomTint']=false})
 
     folder.add(set, 'Disappear')
-    folder.add(set, 'Density', 0, 255)
     folder.add(set, 'ChanceToBorn', 0, 1)
     folder.add(set, 'Make')
     folder.add(set, 'Clear')

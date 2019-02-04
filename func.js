@@ -30,9 +30,16 @@ function addHexi(hexi,rdt,gdt,bdt) {
     return hexi
 }
 
-// function makeLine(renderer) {
-
-// }
+function makeLine(x,y,x1,y1, wid, tint, alpha) {
+    var gfx = new PIXI.Graphics()
+    gfx.position.set(0,0)
+    gfx.beginFill(0xFFFFFF)
+    gfx.lineStyle(wid, tint,alpha)
+    gfx.moveTo(x,y)
+    gfx.lineTo(x1,y1)
+    gfx.endFill()
+    return gfx
+}
 
 function makeCircle(renderer, wid, hei,filters){
     let gfx = new PIXI.Graphics();
