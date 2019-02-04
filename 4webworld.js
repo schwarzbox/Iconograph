@@ -78,7 +78,7 @@ function WebWorld (app) {
         RandomScale: false, Nodes: 7, NodeLength: app.screen.width/16,
         NodeSwitch: false,
         Timer: 200, Gravity: 0, MouseRadius: 64, MousePower: 0.5,isDown: false,
-        Acceleration: 16, LinearDamp: true,
+        Acceleration: 8, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: true,
         Blur: 0, Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF,RandomTint:true,
         Color1: 0xff8f41,Color2: 0x78aff, Color3: 0xe000ff, TripleTint: false,

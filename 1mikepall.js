@@ -3,10 +3,10 @@ function initMikePall() {
 
     let ww = app.screen.width
     let wh = app.screen.height
-    set.ImageX = ww/2
-    set.ImageY = wh/2
+    set.AtomX = ww/2
+    set.AtomY = wh/2
 
-    let data = makeText(app,set.Text,set.ImageX,set.ImageY,ww,wh,set.FontSize)
+    let data = makeText(app,set.Text,set.AtomX,set.AtomY,ww,wh,set.FontSize)
     let dataImage=data[0],tx=data[1],ty=data[2]
 
     var blur = Math.cos(Math.random())
@@ -40,14 +40,16 @@ function initMikePall() {
 function MikePall (app) {
     set = {
         Text: "Mike Pall \nis a \nRobot \nfrom the Future",
-        ImageX: app.screen.width/2, ImageY: app.screen.height/2,FontSize: 96,
+        AtomX: app.screen.width/2, AtomY: app.screen.height/2,FontSize: 96,
         AtomX: app.screen.width/2, AtomY: app.screen.height/2,
-        RandomOrigin: true, NumberAtoms: 0,
+        RandomOrigin: true, Resize: 1.4, NumberAtoms: 0,
         Atoms: 50000,Width: 4, Height: 4,ScaleX: 1,ScaleY: 1,RandomScale:true,
         Nodes: 9, NodeLength: app.screen.width/16, NodeSwitch: false,
         Timer: 200, Gravity: 0,  MouseRadius: 32,MousePower: 0.5,isDown: false,
         Acceleration: 256, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: false,
+        AnimateImpulse: true, Step: 0.001,
+        RadiusImpulse: false, MoveImpulse: false, InvertImpulse: false,
         Blur: 0, Alpha: 1, RandomAlpha: false, Tint: 0xFFFFFF,RandomTint:false,
         Color1: 0xff8f41,Color2: 0x78aff, Color3: 0xe000ff, TripleTint: true,
         Density: 0, ChanceToBorn: 0.3, Disappear: false,
@@ -61,8 +63,8 @@ function MikePall (app) {
                "Small is beautiful",
                "Ground Control\nto \nMajor Tom"
             ]).onChange(function() {initMikePall()})
-    folder.add(set, 'ImageX',0, app.screen.width)
-    folder.add(set, 'ImageY',0, app.screen.height)
+    folder.add(set, 'AtomX',0, app.screen.width)
+    folder.add(set, 'AtomY',0, app.screen.height)
     folder.add(set, 'FontSize',64,128)
     folder.add(set, 'RandomOrigin')
     folder.add(set, 'NumberAtoms').listen()

@@ -2,12 +2,14 @@
 
 WIP
 
-Pixi.js
-
 Visual Generators
 
 MikePall
 
 ShakyAndy
 
+Seurat
+
 WebWorld
+
+![Screenshot](screenshot/screenshot1.png)

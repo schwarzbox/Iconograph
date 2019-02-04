@@ -59,6 +59,19 @@ Atom.prototype.randomAccel = function() {
     this.sprite.acy = randomInt(-set.Acceleration,set.Acceleration)
 }
 
+Atom.prototype.radiusAccel = function() {
+    var mag = magnitude(set.AtomX, set.AtomY,
+                        this.sprite.x,this.sprite.y)
+
+    if (set.InvertImpulse==true) {
+        this.sprite.acx = mag/(this.sprite.x-set.AtomX)*set.Acceleration
+        this.sprite.acy = mag/(this.sprite.y-set.AtomY)*set.Acceleration
+    } else {
+        this.sprite.acx = (this.sprite.x-set.AtomX)/mag*set.Acceleration
+        this.sprite.acy = (this.sprite.y-set.AtomY)/mag*set.Acceleration
+    }
+}
+
 Atom.prototype.update = function(dt) {
     if (set.RandomTint==false && set.TripleTint==false) {
         this.sprite.tint = set.Tint
@@ -68,6 +81,9 @@ Atom.prototype.update = function(dt) {
     }
     if (set.AutoImpulse==true) {
         this.randomAccel()
+    }
+    if (set.RadiusImpulse==true) {
+        this.radiusAccel()
     }
     if (set.Disappear==true) {
         this.sprite.alpha -= dt/10

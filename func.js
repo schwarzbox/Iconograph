@@ -7,7 +7,11 @@ function magnitude(x,y,x1,y1) {
     return ((x1-x) ** 2 + (y1-y) ** 2)**0.5
 }
 
+function normalRGBA(rgba){
+    return rgba.map(x => x/255)
+}
 
+// (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]
 
 function randomHexi() {
     var hex = parseInt(Math.random()*0xffffff,16)
@@ -77,11 +81,12 @@ function makeImage(app,url,x,y,ww,wh,resize,filters,invert) {
     }
     tx = x - img.width/2
     ty = y - img.height/2
+
     app.stage.addChild(img);
 
     var tmp = app.renderer.plugins.extract.canvas(app.stage)
     var data = tmp.getContext('2d').getImageData(0,0,ww,wh)
     app.stage.removeChild(img)
-    return [data,tx,ty]
+    return [data,tx,ty,img.height/2]
 }
 

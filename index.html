@@ -24,13 +24,16 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
  -->
 
-<!-- lines func -->
 <!-- proto set -->
-<!-- sera 800/128-->
+
+<!-- lines func -->
+<!-- fur -->
+<!-- falling particles and randomly divided -->
+
 <!-- particle traces-->
 
 <!-- perlin -->
-<!-- dynamic text -->
+<!-- type dynamic text -->
 <!-- pendulums -->
 
 <!doctype html>
@@ -45,6 +48,7 @@ DEALINGS IN THE SOFTWARE.
     <!-- IMPS -->
     <script src="1mikepall.js"></script>
     <script src="2shakyandy.js"></script>
+    <script src="3seurat.js"></script>
     <script src="4webworld.js"></script>
 
 
@@ -56,7 +60,6 @@ DEALINGS IN THE SOFTWARE.
 <body>
     <div id='gui'> </div>
     <script type="text/javascript">
-
         addHexi(0x000000,1)
         let Application = PIXI.Application,
             loader = PIXI.loader,
@@ -73,8 +76,8 @@ DEALINGS IN THE SOFTWARE.
           type = "canvas"
         }
 
-        var DefaultImp = WebWorld
-        var NowImp = 'WebWorld'
+        var DefaultImp = Seurat
+        var NowImp = 'Seurat'
         // ImageProcessors
         var IMPS = function() {
             this.MikePall = function() {
@@ -87,9 +90,10 @@ DEALINGS IN THE SOFTWARE.
                 ShakyAndy(app)
                 NowImp = 'ShakyAndy'
             }
-            this.RainMan = function() {
+            this.Seurat = function() {
                 reset()
-                NowImp = 'RainMan'
+                Seurat(app)
+                NowImp = 'Seurat'
             }
 
             this.WebWorld = function() {
@@ -109,7 +113,7 @@ DEALINGS IN THE SOFTWARE.
             let imps = gui.addFolder('IMPS')
             imps.add(obj, "MikePall")
             imps.add(obj, "ShakyAndy")
-            imps.add(obj, "RainMan")
+            imps.add(obj, "Seurat")
             imps.add(obj, "WebWorld")
 
             imps.open()
