@@ -46,8 +46,8 @@ function Seurat (app) {
         Atoms: 50000,Width: 4, Height: 4,ScaleX: 1.5,ScaleY: 1.5,
         RandomScale: true,
         Nodes: 9, NodeLength: app.screen.width/16, NodeSwitch: false,
-        Timer: 0, Gravity: 0,  MouseRadius: 0,MousePower: 0.5,isDown: false,
-
+        Timer: 0, Gravity: 0,
+        MouseReact: 1, MouseRadius: 0,MousePower: 0.5,isDown: false,
         Acceleration: 2, LinearDamp: false,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: false,
         ImpulseRadius: 0, BulbImpulse: true, AnimateImpulse:false, Step:0.001,

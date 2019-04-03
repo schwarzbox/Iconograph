@@ -24,13 +24,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
  -->
 
-<!-- fur -->
-<!-- falling particles and randomly divided -->
+<!-- falling particles and randomly divided scatter shot-->
 
 <!-- particle traces-->
 
 <!-- perlin -->
-<!-- type dynamic text -->
 <!-- pendulums -->
 
 <!doctype html>
@@ -47,6 +45,7 @@ DEALINGS IN THE SOFTWARE.
     <script src="2shakyandy.js"></script>
     <script src="3seurat.js"></script>
     <script src="4webworld.js"></script>
+    <script src="5fur.js"></script>
 
 
     <style>* {padding: 0; margin: 0}</style>
@@ -73,8 +72,8 @@ DEALINGS IN THE SOFTWARE.
           type = "canvas"
         }
 
-        var DefaultImp = Seurat
-        var NowImp = 'Seurat'
+        var DefaultImp = Fur
+        var NowImp = 'Fur'
         // ImageProcessors
         var IMPS = function() {
             this.MikePall = function() {
@@ -98,6 +97,12 @@ DEALINGS IN THE SOFTWARE.
                 WebWorld(app)
                 NowImp = 'WebWorld'
             }
+
+            this.Fur = function() {
+                reset()
+                Fur(app)
+                NowImp = 'Fur'
+            }
         }
 
         var Setup = {Background: 0x111222}
@@ -112,6 +117,8 @@ DEALINGS IN THE SOFTWARE.
             imps.add(obj, "ShakyAndy")
             imps.add(obj, "Seurat")
             imps.add(obj, "WebWorld")
+            imps.add(obj, "Fur")
+
 
             imps.open()
             let set = gui.addFolder('Setup')

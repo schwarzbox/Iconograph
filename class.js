@@ -1,5 +1,6 @@
 
-function Atom(app,texture,x,y,clr) {
+function Atom(app,texture,x,y,clr,tag="atom") {
+    this.tag = tag
     this.sprite = new Sprite(texture)
     this.sprite.origin = {x: x, y: y}
     this.sprite.x = x
@@ -118,16 +119,19 @@ Atom.prototype.update = function(dt) {
     this.sprite.x += this.sprite.vx
     this.sprite.y += this.sprite.vy
 
-    var a = this.sprite.x - mouse.x;
-    var b = this.sprite.y - mouse.y;
+    if (set.MouseReact!=0) {
+        var a = this.sprite.x - mouse.x;
+        var b = this.sprite.y - mouse.y;
 
-    var distance = Math.sqrt(a*a + b*b);
-    if(distance<set.MouseRadius){
-        this.sprite.acx = (this.sprite.x - mouse.x)*dt*set.MousePower;
-        this.sprite.acy = (this.sprite.y - mouse.y)*dt*set.MousePower;
-        this.sprite.vx += this.sprite.acx;
-        this.sprite.vy += this.sprite.acy;
+        var distance = Math.sqrt(a*a + b*b);
+        if(distance<set.MouseRadius){
+            this.sprite.acx = (this.sprite.x - mouse.x)*dt*set.MousePower;
+            this.sprite.acy = (this.sprite.y - mouse.y)*dt*set.MousePower;
+            this.sprite.vx += this.sprite.acx*set.MouseReact;
+            this.sprite.vy += this.sprite.acy*set.MouseReact;
+        }
     }
+
     this.sprite.acx = 0
     this.sprite.acy = 0
 

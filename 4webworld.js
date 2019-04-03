@@ -77,8 +77,9 @@ function WebWorld (app) {
         Atoms: 32, Width: 2,Height: 2, ScaleX: 1, ScaleY: 1,
         RandomScale: false, Nodes: 7, NodeLength: app.screen.width/16,
         NodeSwitch: false,
-        Timer: 200, Gravity: 0, MouseRadius: 64, MousePower: 0.5,isDown: false,
-        Acceleration: 8, LinearDamp: true,
+        Timer: 300, Gravity: 0,
+        MouseReact: 1, MouseRadius: 64, MousePower: 0.5,isDown: false,
+        Acceleration: 16, LinearDamp: true,
         ApplyImpulse: function() {applyImpulse()}, AutoImpulse: true,
         ImpulseRadius: 0, BulbImpulse: false,
         Blur: 0, AlphaRadius: 0, Alpha: 1, RandomAlpha: false,
@@ -98,7 +99,7 @@ function WebWorld (app) {
     folder.add(set, 'Width', 2, 8)
     folder.add(set, 'Height', 2, 8)
     folder.add(set, 'Nodes', 0, 15)
-    folder.add(set, 'NodeLength',1, app.screen.width).listen()
+    folder.add(set, 'NodeLength',1, app.screen.width/4).listen()
     folder.add(set, 'NodeSwitch')
     folder.add(set, 'Acceleration',0,128).listen()
     folder.add(set, 'AutoImpulse')
@@ -125,6 +126,9 @@ function WebWorld (app) {
         }
         addNodes()
         set.NumberAtoms = c
+        if (set.Timer>0) {
+            set.Timer--
+        }
     }
 
     function onresize(){
